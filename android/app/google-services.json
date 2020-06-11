@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "943937049662",
+    "firebase_url": "https://todos-6091c.firebaseio.com",
+    "project_id": "todos-6091c",
+    "storage_bucket": "todos-6091c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:943937049662:android:e97bc5ae49895ffec0ad6f",
+        "android_client_info": {
+          "package_name": "com.brenco.todos.todos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "943937049662-g9mc6sl3rgqp81fpjalfpu4kv2a54r5g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brenco.todos.todos",
+            "certificate_hash": "ebbc7e969cfd5fd891ebf0ee6df08b6d20ff1b87"
+          }
+        },
+        {
+          "client_id": "943937049662-vbijpcaeir1hq8dubpdc5ic2nhrp4pqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Y_4CbYBpvEsdSuoGJXdr6Eao9CmhoTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "943937049662-vbijpcaeir1hq8dubpdc5ic2nhrp4pqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

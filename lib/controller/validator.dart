@@ -4,7 +4,7 @@
 * and i created this custom regular expression for phone validation
 */
 class Validator {
-  final RegExp _phoneValidator = RegExp(r"^(?:\+?)(?:[0-9] ?){6,14}[0-9]$");
+  final RegExp _phoneValidator = RegExp(r"^\+(?:[0-9] ?){6,14}[0-9]$");
 
   String phoneValidator(String phone) {
     if (!_phoneValidator.hasMatch(phone)) {

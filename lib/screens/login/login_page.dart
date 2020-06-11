@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todos/constants.dart';
 import 'package:todos/controller/validator.dart';
+import 'package:todos/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   static const String id = '/login';
@@ -16,11 +17,24 @@ class _LoginPageState extends State<LoginPage> {
   Validator _validator;
   // if the form is already validate or not, is set to TRUE when user click to login
   bool _alreadyValidate = false;
+  //controller of phone number input
+  TextEditingController _phoneController;
+  //Object of AuthService
+  AuthService _authService;
+
   @override
   void initState() {
     super.initState();
     _formKey = GlobalKey<FormState>();
     _validator = Validator();
+    _authService = AuthService();
+    _phoneController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             // Phone number input
             TextFormField(
               keyboardType: TextInputType.phone,
+              controller: _phoneController,
               decoration: inputDecoration.copyWith(
                   labelText: "Phone Number",
                   prefixIcon: Icon(Icons.phone, color: greenColor),
@@ -48,7 +63,9 @@ class _LoginPageState extends State<LoginPage> {
             InkWell(
               onTap: () {
                 _alreadyValidate = true;
-                _formKey.currentState.validate();
+                if (_formKey.currentState.validate()) {
+                  _authService.verifyPhone(context, _phoneController.text.trim());
+                }
               },
               child: Container(
                 margin: const EdgeInsets.only(top: 40.0),
