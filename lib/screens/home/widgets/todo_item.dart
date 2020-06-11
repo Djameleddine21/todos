@@ -29,7 +29,7 @@ class _TodoItemState extends State<TodoItem> {
       direction: DismissDirection.endToStart,
       dismissThresholds: {DismissDirection.endToStart: 0.95},
       onDismissed: (_) {
-        //TODO : delete item
+        TodoService.instance.deleteTodo(widget.id);
       },
       background: Container(
         color: Colors.red,
