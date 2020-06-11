@@ -4,6 +4,12 @@ import 'package:todos/constants.dart';
 import 'package:todos/screens/home/home_page.dart';
 
 class AuthService {
+
+  static AuthService instance = AuthService._();
+
+  AuthService._();
+
+
   /// verfication of the Phone number
   Future<void> verifyPhone(BuildContext context, String phone) async {
     final PhoneVerificationCompleted verificationCompleted = (AuthCredential credential) async {
@@ -95,7 +101,18 @@ class AuthService {
     );
   }
 
+  ///logout from the App
   void signOut() {
     FirebaseAuth.instance.signOut();
+  }
+
+  ///get current userID
+  Future<String> getUserId() async {
+    String id = '';
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if (user != null) {
+      id = user.uid;
+    }
+    return id;
   }
 }

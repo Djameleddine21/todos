@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
     checkUser();
     _formKey = GlobalKey<FormState>();
     _validator = Validator();
-    _authService = AuthService();
+    _authService = AuthService.instance;
     _phoneController = TextEditingController();
   }
 

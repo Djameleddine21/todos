@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:todos/models/todo.dart';
+import 'package:todos/services/auth_service.dart';
 import 'package:todos/services/todo_service.dart';
 import '../../constants.dart';
 
@@ -154,19 +155,20 @@ class _AddTodoPageState extends State<AddTodoPage> {
             _validateTime(),
             // Add item button
             InkWell(
-              onTap: () {
+              onTap: () async {
                 setState(() {
                   _isClicked = true;
                 });
                 if (_formKey.currentState.validate()) {
+                  String userID = await AuthService.instance.getUserId();
                   final Todo todo = Todo(
-                    userId: "ZhptkGKsdld1ybJ2HHDkzaPzWbE2",
+                    userId: userID,
                     title: _titleController.text,
                     description: _descriptionController.text,
                     dateTime: time,
                     isDone: false,
                   );
-                  TodoService.instance.createTodo(todo);
+                  TodoService.instance.createTodo(todo,context);
                 }
               },
               child: Container(

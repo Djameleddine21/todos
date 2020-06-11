@@ -47,7 +47,7 @@ class _TodoItemState extends State<TodoItem> {
             softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: Text(widget.todo.dateTime.toString().substring(0, 10)),
+          trailing: Text(widget.todo.dateTime.toString().substring(0, 16)),
           leading: widget.todo.isDone
               ? Icon(Icons.check_box, color: greenColor)
               : Icon(Icons.check_box_outline_blank, color: greenColor),

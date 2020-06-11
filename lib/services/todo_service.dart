@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todos/models/todo.dart';
+import 'package:todos/screens/home/home_page.dart';
+import 'package:todos/services/auth_service.dart';
 
 class TodoService {
   final String _collection = "todos";
@@ -17,11 +19,11 @@ class TodoService {
   }
 
   /// create Todo item and store it in the Firebase
-  Future createTodo(Todo todo) async {
+  Future createTodo(Todo todo, BuildContext context) async {
     try {
-      await _firestore.collection(_collection).add(todo.toJson()).then((value) {
-        print(value.documentID);
-      });
+      _showWaiting(context);
+      await _firestore.collection(_collection).add(todo.toJson());
+      Navigator.popAndPushNamed(context,HomePage.id);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -30,9 +32,7 @@ class TodoService {
   ///  delete Todo item from the Firebase database
   Future deleteTodo(String id) async {
     try {
-      await _firestore.collection(_collection).document(id).delete().then((value) {
-        print("Item deleted");
-      });
+      await _firestore.collection(_collection).document(id).delete();
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -64,7 +64,8 @@ class TodoService {
 
   /// get All todo Item of the user
   /// as List of Map with todo id as key and the todo object as value
-  Future<List<Map<String, dynamic>>> getTodos(String userId) async {
+  Future<List<Map<String, dynamic>>> getTodos() async {
+    String userId = await AuthService.instance.getUserId();
     List<Map<String, dynamic>> list = <Map<String, dynamic>>[];
     try {
       QuerySnapshot data = await _firestore
@@ -105,5 +106,21 @@ class TodoService {
       print(e.toString());
     }
     return list;
+  }
+
+  /// show alert dialog of waiting
+  _showWaiting(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Wait..."),
+            content: Container(
+              height: 100.0,
+              width: 100.0,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        });
   }
 }

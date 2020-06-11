@@ -26,7 +26,7 @@ class CustomDrawer extends StatelessWidget {
               Divider(),
               FlatButton(
                 onPressed: () {
-                  AuthService()..signOut();
+                  AuthService.instance.signOut();
                   Navigator.pushNamedAndRemoveUntil(context, LoginPage.id, (_) => false);
                 },
                 child: Row(
