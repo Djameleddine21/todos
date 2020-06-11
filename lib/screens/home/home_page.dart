@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           TodoItem(
             todo: Todo(
+              id: "01",
               title: "Practice Sport",
               description: "Go to the gym",
               isDone: true,
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
           ),
           TodoItem(
             todo: Todo(
+              id: "02",
               title: "Practice Sport",
               description: "Go to the gym",
               isDone: false,

@@ -4,7 +4,7 @@ import 'package:todos/constants.dart';
 import 'package:todos/screens/home/home_page.dart';
 
 class AuthService {
-  //verfication of the Phone number
+  /// verfication of the Phone number
   Future<void> verifyPhone(BuildContext context, String phone) async {
     final PhoneVerificationCompleted verificationCompleted = (AuthCredential credential) async {
       try {
@@ -46,7 +46,7 @@ class AuthService {
     }
   }
 
-  //open this Alert dialog to verify OTP CODE
+  /// open this Alert dialog to verify OTP CODE
   smsOTPDialog(BuildContext context, String verificationId) {
     TextEditingController _controller = TextEditingController();
     return showDialog(
