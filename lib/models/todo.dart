@@ -5,14 +5,14 @@ part 'todo.g.dart';
 
 @JsonSerializable()
 class Todo {
-  String id;
+  String userId;
   String title;
   String description;
-  DateTime dateTime;
+  String dateTime;
   bool isDone;
 
   Todo({
-    @required this.id,
+    @required this.userId,
     @required this.title,
     @required this.description,
     @required this.dateTime,

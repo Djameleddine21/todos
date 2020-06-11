@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:todos/models/todo.dart';
+import 'package:todos/services/todo_service.dart';
 import '../../constants.dart';
 
 class AddTodoPage extends StatefulWidget {
@@ -25,12 +27,27 @@ class _AddTodoPageState extends State<AddTodoPage> {
     cancelStyle: TextStyle(color: Colors.red),
   );
 
+  //input controllers
+  TextEditingController _titleController;
+  TextEditingController _descriptionController;
+  //Date and Time
+  String time = "";
+
   @override
   void initState() {
     super.initState();
     _formKey = GlobalKey<FormState>();
     _isClicked = false;
     _timeDone = false;
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
   }
 
   String _validate(value) {
@@ -66,6 +83,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: TextFormField(
+                controller: _titleController,
                 decoration: inputDecoration.copyWith(
                   labelText: "title",
                   prefixIcon: Icon(Icons.title, color: greenColor),
@@ -85,6 +103,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: TextFormField(
+                controller: _descriptionController,
                 decoration: inputDecoration.copyWith(
                   labelText: "Description",
                   prefixIcon: Icon(Icons.description, color: greenColor),
@@ -116,6 +135,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
                     onConfirm: (date) {
                       setState(() {
                         _timeDone = true;
+                        time = date.toString();
                       });
                     },
                     theme: _pickerTheme,
@@ -138,7 +158,16 @@ class _AddTodoPageState extends State<AddTodoPage> {
                 setState(() {
                   _isClicked = true;
                 });
-                _formKey.currentState.validate();
+                if (_formKey.currentState.validate()) {
+                  final Todo todo = Todo(
+                    userId: "ZhptkGKsdld1ybJ2HHDkzaPzWbE2",
+                    title: _titleController.text,
+                    description: _descriptionController.text,
+                    dateTime: time,
+                    isDone: false,
+                  );
+                  TodoService.instance.createTodo(todo);
+                }
               },
               child: Container(
                 margin: const EdgeInsets.only(top: 40.0),

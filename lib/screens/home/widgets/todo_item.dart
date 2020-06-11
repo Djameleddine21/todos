@@ -1,12 +1,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:todos/models/todo.dart';
+import 'package:todos/services/todo_service.dart';
 import '../../../constants.dart';
 
 class TodoItem extends StatefulWidget {
+  final String id;
   final Todo todo;
 
-  TodoItem({@required this.todo}) : assert(todo != null);
+  TodoItem({@required this.todo, @required this.id})
+      : assert(todo != null),
+        assert(id != null);
 
   @override
   _TodoItemState createState() => _TodoItemState();
@@ -49,6 +53,7 @@ class _TodoItemState extends State<TodoItem> {
               : Icon(Icons.check_box_outline_blank, color: greenColor),
           onTap: () {
             this.setState(() {
+              TodoService.instance.doneTodo(widget.id, widget.todo.isDone);
               widget.todo.isDone = !widget.todo.isDone;
             });
           },
