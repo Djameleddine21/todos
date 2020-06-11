@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:todos/screens/add_todo/add_todo_page.dart';
+import 'package:todos/screens/home/widgets/drawer.dart';
 import 'package:todos/screens/home/widgets/todo_item.dart';
+import 'package:todos/screens/search/search_page.dart';
 import 'package:todos/services/todo_service.dart';
-
 import '../../constants.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,14 +24,31 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Home Page"), centerTitle: true, backgroundColor: greenColor),
+      // App Bar
+      appBar: AppBar(
+        title: Text("Home Page"),
+        centerTitle: true,
+        backgroundColor: greenColor,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            iconSize: 30.0,
+            onPressed: () {
+              showSearch(context: context, delegate: SearchPage());
+            },
+          ),
+        ],
+      ),
+      /// drawer
+      drawer: CustomDrawer(),
+      /// body
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder<List<Map<String, dynamic>>>(
           future: TodoService.instance.getTodos("ZhptkGKsdld1ybJ2HHDkzaPzWbE2"),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasData) {
               final todos = snapshot.data;
               return ListView.builder(

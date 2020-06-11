@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todos/constants.dart';
 import 'package:todos/controller/validator.dart';
+import 'package:todos/screens/home/home_page.dart';
+import 'package:todos/screens/login/widget/cureved_container.dart';
 import 'package:todos/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -25,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    checkUser();
     _formKey = GlobalKey<FormState>();
     _validator = Validator();
     _authService = AuthService();
@@ -37,47 +41,71 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  ///check if user is already connected or No
+  checkUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if (user != null) {
+      Navigator.pushNamed(context, HomePage.id);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var _size =
+        Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height * 0.4);
     return Scaffold(
-      appBar: AppBar(title: Text("Login"), centerTitle: true, backgroundColor: greenColor),
+      // appBar: AppBar(title: Text("Login"), centerTitle: true, backgroundColor: greenColor),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
           children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: CustomPaint(
+                painter: CurverdContainer(),
+                size: _size,
+                child: Center(child: Text("LOGIN",style: whiteText.copyWith(fontSize: 35.0),)),
+              ),
+            ),
             // Phone number input
-            TextFormField(
-              keyboardType: TextInputType.phone,
-              controller: _phoneController,
-              decoration: inputDecoration.copyWith(
-                  labelText: "Phone Number",
-                  prefixIcon: Icon(Icons.phone, color: greenColor),
-                  hintText: "Your phone number..."),
-              validator: _validator.phoneValidator,
-              onChanged: (_) {
-                if (_alreadyValidate) _formKey.currentState.validate();
-              },
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20,40,20,20),
+              child: TextFormField(
+                keyboardType: TextInputType.phone,
+                controller: _phoneController,
+                decoration: inputDecoration.copyWith(
+                    labelText: "Phone Number",
+                    prefixIcon: Icon(Icons.phone, color: greenColor),
+                    hintText: "Your phone number..."),
+                validator: _validator.phoneValidator,
+                onChanged: (_) {
+                  if (_alreadyValidate) _formKey.currentState.validate();
+                },
+              ),
             ),
             // login button
-            InkWell(
-              onTap: () {
-                _alreadyValidate = true;
-                if (_formKey.currentState.validate()) {
-                  _authService.verifyPhone(context, _phoneController.text.trim());
-                }
-              },
-              child: Container(
-                margin: const EdgeInsets.only(top: 40.0),
-                padding: const EdgeInsets.all(20.0),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: greenColor,
-                ),
-                child: Text(
-                  "LOGIN",
-                  style: whiteText.copyWith(fontSize: 20.0, letterSpacing: 1.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: InkWell(
+                onTap: () {
+                  _alreadyValidate = true;
+                  if (_formKey.currentState.validate()) {
+                    _authService.verifyPhone(context, _phoneController.text.trim());
+                  }
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(top: 40.0),
+                  padding: const EdgeInsets.all(20.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.0),
+                    color: greenColor,
+                  ),
+                  child: Text(
+                    "LOGIN",
+                    style: whiteText.copyWith(fontSize: 20.0, letterSpacing: 1.0),
+                  ),
                 ),
               ),
             ),

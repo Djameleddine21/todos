@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:todos/models/todo.dart';
 
 class TodoService {
@@ -22,7 +23,7 @@ class TodoService {
         print(value.documentID);
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -33,7 +34,7 @@ class TodoService {
         print("Item deleted");
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -48,17 +49,21 @@ class TodoService {
         print("Update with succes");
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
   ///make todo as Done
   Future doneTodo(String id, bool isDone) async {
-    await _firestore.collection(_collection).document(id).updateData({"isDone": (!isDone)});
-    print("update Done");
+    try {
+      await _firestore.collection(_collection).document(id).updateData({"isDone": (!isDone)});
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   /// get All todo Item of the user
+  /// as List of Map with todo id as key and the todo object as value
   Future<List<Map<String, dynamic>>> getTodos(String userId) async {
     List<Map<String, dynamic>> list = <Map<String, dynamic>>[];
     try {
@@ -68,12 +73,32 @@ class TodoService {
           .getDocuments();
       data.documents.forEach((element) {
         // map.putIfAbsent(element.documentID, () => Todo.fromJson(element.data));
-        list.add(
-          {
-            "id": element.documentID,
-            "todo" : Todo.fromJson(element.data),
-          }
-        );
+        list.add({
+          "id": element.documentID,
+          "todo": Todo.fromJson(element.data),
+        });
+      });
+      return list;
+    } catch (e) {
+      print(e.toString());
+    }
+    return list;
+  }
+
+  ///Search a todo item with title
+  Future<List<Map<String, dynamic>>> searchTodo(String title) async {
+    List<Map<String, dynamic>> list = <Map<String, dynamic>>[];
+    try {
+      QuerySnapshot data = await _firestore
+          .collection(_collection)
+          .where("title", isGreaterThanOrEqualTo: title)
+          .getDocuments();
+      data.documents.forEach((element) {
+        // map.putIfAbsent(element.documentID, () => Todo.fromJson(element.data));
+        list.add({
+          "id": element.documentID,
+          "todo": Todo.fromJson(element.data),
+        });
       });
       return list;
     } catch (e) {
